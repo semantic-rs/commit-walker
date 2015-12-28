@@ -6,4 +6,4 @@ authors = ["Jan-Erik Rediger <janerik@fnordig.de>"]
 [dependencies]
 git2 = "0.3.3"
 semver = "0.2.1"
-commit_analyzer = { path = "/home/jer/projects/rust/semantic-rs/commit-analyzer" }
+commit_analyzer = { git = "https://github.com/semantic-rs/commit-analyzer" }
