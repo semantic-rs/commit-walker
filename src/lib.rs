@@ -59,7 +59,7 @@ pub fn version_bump_since_tag(path: &str, tag: &str) -> CommitType {
     let tag = walker.map(|c| repo.find_commit(c).expect("No commit found"))
         .map(|c| format_commit(c))
         .map(|c| commit_analyzer::analyze_single(&c).expect("Analyzing commit failed"))
-        .max().unwrap();
+        .max().unwrap_or(CommitType::Unknown);
 
     tag
 }
