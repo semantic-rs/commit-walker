@@ -15,7 +15,10 @@ fn format_commit(commit: Commit) -> String {
 }
 
 pub fn latest_tag(path: &str) -> Option<Version> {
-    let repo = Repository::open(path).unwrap();
+    let repo = match Repository::open(path) {
+        Some(repo) => repo,
+        None => return None
+    };
     let mut biggest_tag = Version::parse("0.0.0").unwrap();
 
     let tags = match repo.tag_names(None) {
