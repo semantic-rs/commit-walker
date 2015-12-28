@@ -14,11 +14,17 @@ fn format_commit(commit: Commit) -> String {
     format!("{}\n{}", commit.id(), commit.message().unwrap_or(""))
 }
 
-pub fn latest_tag(path: &str) -> Version {
+pub fn latest_tag(path: &str) -> Option<Version> {
     let repo = Repository::open(path).unwrap();
     let mut biggest_tag = Version::parse("0.0.0").unwrap();
 
-    let tags = repo.tag_names(None).unwrap();
+    let tags = match repo.tag_names(None) {
+        Ok(tags) => tags,
+        Err(_) => return None
+    };
+    if tags.len() == 0 {
+        return None
+    }
     for tag in tags.iter() {
         let tag = tag.unwrap();
         let tag = &tag[1..];
@@ -29,14 +35,17 @@ pub fn latest_tag(path: &str) -> Version {
         }
     }
 
-    biggest_tag
+    Some(biggest_tag)
 }
 
 pub fn version_bump_since_latest(path: &str) -> CommitType {
-    let tag = latest_tag(path);
-
-    let tag = format!("v{}", tag.to_string());
-    version_bump_since_tag(path, &tag)
+    match latest_tag(path) {
+        Some(t) => {
+            let tag = format!("v{}", t.to_string());
+            version_bump_since_tag(path, &tag)
+        },
+        None => CommitType::Major
+    }
 }
 
 pub fn version_bump_since_tag(path: &str, tag: &str) -> CommitType {
