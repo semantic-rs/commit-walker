@@ -1,7 +1,7 @@
 [package]
 name = "commit_walker"
 version = "0.1.0"
-authors = ["Jan-Erik Rediger <janerik@fnordig.de>"]
+authors = ["Jan-Erik Rediger <janerik@fnordig.de>", "Jan Schulte <hello@unexpected-co.de>"]
 
 [dependencies]
 git2 = "0.3.3"
