@@ -1,0 +1,9 @@
+[package]
+name = "commit-walker"
+version = "0.1.0"
+authors = ["Jan-Erik Rediger <janerik@fnordig.de>"]
+
+[dependencies]
+git2 = "0.3.3"
+semver = "0.2.1"
+commit_analyzer = { path = "/home/jer/projects/rust/semantic-rs/commit-analyzer" }
