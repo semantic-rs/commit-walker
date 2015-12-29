@@ -7,3 +7,7 @@ authors = ["Jan-Erik Rediger <janerik@fnordig.de>", "Jan Schulte <hello@unexpect
 git2 = "0.3.3"
 semver = "0.2.1"
 commit_analyzer = { git = "https://github.com/semantic-rs/commit-analyzer" }
+
+[[bin]]
+name = "commit_walker"
+doc = false

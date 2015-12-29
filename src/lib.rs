@@ -15,7 +15,10 @@ fn format_commit(commit: Commit) -> String {
 }
 
 pub fn latest_tag(path: &str) -> Option<Version> {
-    let repo = Repository::open(path).unwrap();
+    let repo = match Repository::open(path) {
+        Ok(repo) => repo,
+        Err(_) => return None
+    };
     let mut biggest_tag = Version::parse("0.0.0").unwrap();
 
     let tags = match repo.tag_names(None) {
@@ -51,15 +54,15 @@ pub fn version_bump_since_latest(path: &str) -> CommitType {
 pub fn version_bump_since_tag(path: &str, tag: &str) -> CommitType {
     let tag = range_to_head(tag);
 
-    let repo = Repository::open(path).unwrap();
+    let repo = Repository::open(path).expect("Open repository failed");
 
-    let mut walker = repo.revwalk().unwrap();
-    walker.push_range(&tag).unwrap();
+    let mut walker = repo.revwalk().expect("Creating a revwalk failed");
+    walker.push_range(&tag).expect("Adding a range failed");
 
-    let tag = walker.map(|c| repo.find_commit(c).unwrap())
+    let tag = walker.map(|c| repo.find_commit(c).expect("No commit found"))
         .map(|c| format_commit(c))
-        .map(|c| commit_analyzer::analyze_single(&c).unwrap())
-        .max().unwrap();
+        .map(|c| commit_analyzer::analyze_single(&c).expect("Analyzing commit failed"))
+        .max().unwrap_or(CommitType::Unknown);
 
     tag
 }
