@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Jan-Erik Rediger <janerik@fnordig.de>", "Jan Schulte <hello@unexpected-co.de>"]
 
 [dependencies]
-git2 = "0.3.3"
+git2 = "0.3.4"
 semver = "0.2.1"
 commit_analyzer = { git = "https://github.com/semantic-rs/commit-analyzer" }
 
