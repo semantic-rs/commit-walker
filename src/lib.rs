@@ -19,25 +19,16 @@ pub fn latest_tag(path: &str) -> Option<Version> {
         Ok(repo) => repo,
         Err(_) => return None
     };
-    let mut biggest_tag = Version::parse("0.0.0").unwrap();
 
     let tags = match repo.tag_names(None) {
         Ok(tags) => tags,
         Err(_) => return None
     };
-    if tags.len() == 0 {
-        return None
-    }
-    for tag in tags.iter() {
-        let tag = tag.unwrap();
-        let tag = &tag[1..];
-        let v = Version::parse(tag).expect(&format!("Malformed tag {}", tag));
-        if v > biggest_tag {
-            biggest_tag = v;
-        }
-    }
 
-    Some(biggest_tag)
+    tags.iter()
+        .map(|tag| tag.unwrap())
+        .filter_map(|tag| Version::parse(&tag[1..]).ok())
+        .max()
 }
 
 pub fn version_bump_since_latest(path: &str) -> CommitType {
