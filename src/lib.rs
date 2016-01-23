@@ -31,10 +31,7 @@ pub fn latest_tag(path: &str) -> Option<Version> {
     for tag in tags.iter() {
         let tag = tag.unwrap();
         let tag = &tag[1..];
-        let v = match Version::parse(tag) {
-            Ok(v) => v,
-            Err(_) => continue
-        };
+        let v = Version::parse(tag).expect(&format!("Malformed tag {}", tag));
         if v > biggest_tag {
             biggest_tag = v;
         }
